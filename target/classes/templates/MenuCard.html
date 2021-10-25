@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Card</title>
+</head>
+<body>
+<table id="foodDetails">
+    <tr>
+        <th>Food name</th>
+        <th>Description</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="foodItem : ${foodList}">
+        <td class="align-middle" th:text="${foodItem.name}"></td>
+        <td class="align-middle" th:text="${foodItem.description}"></td>
+        <td style="text-align: right;" class="align-middle" th:text="${foodItem.price}"></td>
+    </tr>
+</table>
+</body>
+</html>
