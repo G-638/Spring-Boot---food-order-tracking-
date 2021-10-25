@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<style>
+    body{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+    }
+    .topnav {
+        background-color: #f1f1f1;
+        border-bottom: 1px solid red;
+        overflow: hidden;
+      }
+
+      .topnav a {
+        float: left;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+
+      .topnav a:hover {
+        border-bottom: 3px solid red;
+        color: black;
+      }
+    .submit-btn{
+      background-color: #4278ff;
+      color: #f2f2f2;
+      display: block;
+      float: left;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 17px;
+      margin: 5px auto;
+    }
+    .reset-btn{
+      background-color: #ff6868;
+      color: #f2f2f2;
+      border: none;
+      border-radius: 5px;
+      display: block;
+      text-align: center;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 17px;
+      margin: 6px auto;
+    }
+    .text-input{
+      width: 50px;
+      padding: 10px;
+      text-align: center;
+      border-radius: 2px;
+      border: none;
+      background-color: rgb(255, 255, 255);
+    }
+    .td{
+        padding: 10px o;
+    }
+    tables {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    .split{
+        width: 100%;
+        position: fixed;
+        top: 10%;
+        height: 100%;
+        padding: 20px;
+        margin: 8px;
+    }
+    .left{
+        width: 60%;
+        position: absolute;
+        left: 10px;
+    }
+    .right{
+        right: 0;
+        position: absolute;
+        width: 50%;
+    }
+    .centered{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script th:inline="javascript">
+    function onlyNumberKey(evt) {
+
+        // Only ASCII character in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
+    function getTableData(){
+      var data = [];
+        var table = document.getElementById("foodDetails");
+        for(var i=1; i<table.rows.length;i++){
+          if(table.rows[i].cells[3].firstChild.value != ""){
+            var id = [[${foodList}]][i-1].uid+"//"+table.rows[i].cells[3].firstChild.value;
+            console.log(id);
+            data.push(id);
+          }
+        }
+
+        var total;
+        console.log([[${cartList}]]);
+
+        var url = document.URL
+
+        var postUrl = "http://localhost:8080";
+        var tableId = "/" + url.substr(url.lastIndexOf('/') + 1);
+
+        const form = document.createElement('form');
+        form.method = "post";
+        form.action = "/additem"+tableId;
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'data';
+        hiddenField.value = data;
+  
+        form.appendChild(hiddenField);
+        
+        document.body.appendChild(form);
+        form.submit();
+        console.log(data);
+    }
+
+    function resetTable(){
+      
+      var url = document.URL
+
+      var postUrl = "http://localhost:8080";
+      var tableId = "/" + url.substr(url.lastIndexOf('/') + 1);
+
+      const form = document.createElement('form');
+      form.method = "DELETE";
+      form.action = "/reset"+tableId;
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      form.appendChild(hiddenField);
+      document.body.appendChild(form);
+      form.submit();
+      console.log(data);
+    }
+
+
+
+</script>
+<body>
+
+<div class="topnav">
+    <a class="active" href="/homepage">Home</a>
+    <a href="/logout" style="float: right;">Logout</a>
+</div>
+<br>
+    <div class="split left">
+        <table id="foodDetails">
+            <tr>
+                <th>Food name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Qty</th>
+            </tr>
+            <tr th:each="foodItem : ${foodList}">
+                <td class="align-middle" th:text="${foodItem.name}"></td>
+                <td class="align-middle" th:text="${foodItem.description}"></td>
+                <td class="align-middle" style="text-align: right;" th:text="${foodItem.price}"></td>
+                <td><input class="text-input" id="qty" th:value="${foodItem.qty} != 0 ? ${foodItem.qty} : ''" onkeypress="return onlyNumberKey(event)" placeholder="0"
+                           size="50%"
+                           type="tel"></td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <div>
+            <input class="submit-btn" onclick=getTableData() type="submit">
+                <form METHOD="post" th:action="@{/reset/}+${id}">
+                    <input class="reset-btn" type="submit" value=" Reset ">
+                </form>
+        </div>
+    </div>
+    <br>
+    <div class="split right">
+        <h1>Cart</h1>
+        <h2 th:if="${cartList.empty}">Order is Empty!!!</h2>
+        <table id="cartDetails" th:if="${!cartList.empty}" th:with="totalPrice=0">
+            <tr>
+                <th>Food name</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Amount</th>
+            </tr>
+            <tr th:each="foodItem : ${cartList}">
+                <td class="align-middle" th:text="${foodItem.name}"></td>
+                <td class="align-middle" style="text-align: right;" th:text="${foodItem.price}"></td>
+                <td class="align-middle" style="text-align: right;" th:text="${foodItem.qty}"></td>
+                <td class="align-middle" style="text-align: right;" th:text="${foodItem.qty}*${foodItem.price}"></td>
+            </tr>
+        </table>
+        <h4 th:if="${!cartList.empty}" >Total Amount</h4>
+        <p th:if="${!cartList.empty}" th:text="${mtotal}"></p>
+</div>
+</body>
+</html>
