@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.FoodItems;
 import com.example.demo.model.TableOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

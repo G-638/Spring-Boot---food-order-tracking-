@@ -42,7 +42,7 @@ public class TableOrderService {
     }
 
 
-    void save(){
+    public void save(){
         foodOrderRepo.save(new FoodItems( UUID.randomUUID().toString(),"Curd Rice", "Curd rice desc", 50, 0));
         foodOrderRepo.save(new FoodItems( UUID.randomUUID().toString(),"Plain Rice", "Plain rice desc", 50, 0));
         foodOrderRepo.save(new FoodItems( UUID.randomUUID().toString(),"Gobi Rice", "Gobi rice desc", 70, 0));

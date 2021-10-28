@@ -72,7 +72,6 @@ public class ProductController {
 
     @GetMapping({"/homepage","/"})
     String homePage(Model model){
-
         model.addAttribute("foodList", tableOrderService.findAllTableData());
         model.addAttribute("tables", tableOrderService.getOrderedTableId());
         return "homepage";
