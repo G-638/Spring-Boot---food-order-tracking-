@@ -4,15 +4,24 @@ import com.example.demo.model.FoodItems;
 import com.example.demo.model.FoodModel;
 import com.example.demo.model.TableOrder;
 import com.example.demo.service.TableOrderService;
+import com.example.demo.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
+@SessionAttributes("current_user")
 public class ProductController {
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
 
     @Autowired
     TableOrderService tableOrderService;
@@ -70,10 +79,18 @@ public class ProductController {
         return "tableDetail";
     }
 
+    public void myRequestHandlingMethod(HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+    }
+
     @GetMapping({"/homepage","/"})
     String homePage(Model model){
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+//        System.out.println(name);
         model.addAttribute("foodList", tableOrderService.findAllTableData());
         model.addAttribute("tables", tableOrderService.getOrderedTableId());
+        com.example.demo.model.User user =  userDetailService.getUserData();
         return "homepage";
     }
 
