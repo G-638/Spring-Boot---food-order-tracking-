@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    body{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+    }
+    .topnav {
+        background-color: #f1f1f1;
+        border-bottom: 2px solid red;
+        overflow: hidden;
+      }
+
+      .topnav a {
+        float: left;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+
+      .topnav a:hover, .dropdown:hover, .dropbtn:hover {
+        border-bottom: 2px solid red;
+        background-color: #ff030f;
+        color: white;
+      }
+
+<!--      .topnav a.active {-->
+<!--        border-bottom: 3px solid red;-->
+<!--        color: black;-->
+<!--      }-->
+
+    .tablesA, .tablesB{
+        width: 280px;
+        top: 5px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px;
+        border-radius: 10px;
+        border: 2px solid gray;
+        background-color: rgb(255, 255, 255);
+    }
+    .tablesA:hover,.tablesB:hover{
+        background-color: #42f572;
+        color: white;
+    }
+    .tablesA#active{
+        background-color: #42f572;
+        color: white;
+    }
+    .tablesB#active{
+        background-color: #42f572;
+        color: white;
+    }
+    .tables1{
+        width: 70px;
+        padding: 5px;
+        text-align: center;
+        margin: 20px;
+        border-radius: 10px;
+        border: 2px solid gray;
+        background-color: rgb(255, 255, 255);
+    }
+    .table-row{
+        display: flex;
+    }
+    .split{
+        width: 100%;
+        position: fixed;
+        top: 5%;
+        height: 80%;
+        padding: 20px;
+        margin: 8px;
+    }
+    .left{
+        width: 50%;
+        left: 5%;
+    }
+    .right{
+        right: 5%;
+        width: 50%;
+    }
+    .centered{
+        position: absolute;
+         top: 30%;
+         left: 25%;
+         transform: translate(-50%, -50%);
+         text-align: center;
+    }
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+    .dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: red;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  color: white;
+}
+
+.flip-card {
+  background-color: transparent;
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
+}
+.arrange{
+
+}
+</style>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+<script>
+        function showBranch(b,bn){
+            console.log(b,bn);
+            window.location.href="/branch/"+b;
+            console.log("/branch/"+b);
+            }
+        function showTable(b){
+            console.log(b);
+            window.location.href="/table/"+b;
+            console.log("/table/"+b);
+        }
+        function myFunction(){
+             window.location.href="/";
+        }
+</script>
+<div class="topnav">
+    <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">Home
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/table/{branch}(branch=${branch1})}" th:text="${branchA}"></a>
+            <a th:href="@{/table/{branch}(branch=${branch2})}" th:text="${branchB}"></a>
+        </div>
+    </div>
+    <a href="/logout" style="float: right;">Logout</a>
+</div>
+
+<div class="split left">
+    <div class="centered">
+        <h2>Branches</h2><br>
+        <div id="button1">
+            <div class="tablesA" th:onclick="showBranch([[${branch1}]],[[${branchA}]])" style="border: 2px solid #42f572">
+                <h4 th:text="${branchA} + ' Branch'"/>
+            </div>
+        </div>
+            <br>
+        <div id="button2">
+            <div class="tablesB" th:onclick="showBranch([[${branch2}]],[[${branchB}]])" style="border: 2px solid #42f572" >
+                <h4 th:text="${branchB}+ ' Branch'" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="split right">
+    <td class="centered">
+        <div th:each="foodItem : ${branchData}">
+            <h3 th:text="${foodItem.branchName}" style="color:red"></h3>
+        </div>
+        <h4>List of Employees:</h4>
+
+<!--        <table id="foodDetails">-->
+<!--            <tr>-->
+<!--                <th>Branch Name</th>-->
+<!--                <th>Address</th>-->
+<!--                <th>Phone No</th>-->
+<!--            </tr>-->
+<!--            <tr th:each="foodItem : ${branchData}">-->
+<!--                <td class="align-middle" th:text="${foodItem.branchName}"></td>-->
+<!--                <td class="align-middle" th:text="${foodItem.address}"></td>-->
+<!--                <td style="text-align: right;" class="align-middle" th:text="${foodItem.phoneNo}"></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+        <br>
+<!--        <table id="foodDetails1">-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Gender</th>-->
+<!--                <th>Address</th>-->
+<!--                <th>Phone No</th>-->
+<!--            </tr>-->
+<!--            <tr th:each="userDetail : ${userData}">-->
+<!--                <td class="align-middle" th:text="${userDetail.name}"></td>-->
+<!--                <td class="align-middle" th:text="${userDetail.gender}"></td>-->
+<!--                <td class="align-middle" th:text="${userDetail.address}"></td>-->
+<!--                <td class="align-middle" th:text="${userDetail.phoneNo}"></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+        <br>
+        <div class="arrange">
+        <div class="flip-card" th:each="userDetail : ${userData}">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div style="width:150px;height:150px;margin-top:75px;" th:text="${userDetail.name}"></div>
+                </div>
+                <div class="flip-card-back">
+                    <h3 th:text="${userDetail.name}"></h3>
+                    <p th:text="${userDetail.gender}"></p>
+                    <p  th:text="${userDetail.address}"></p>
+                    <p  th:text="${userDetail.phoneNo}"></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div th:each="foodItem : ${branchData}">
+            <div class="tables1" th:onclick="showTable([[${foodItem.branch}]])"><p>Show Table</p></div>
+        </div>
+<!--        <div class="flip-card">-->
+<!--            <div class="flip-card-inner">-->
+<!--                <div class="flip-card-front">-->
+<!--                    <div src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">-->
+<!--                </div>-->
+<!--                <div class="flip-card-back">-->
+<!--                    <h1>John Doe</h1>-->
+<!--                    <p>Architect & Engineer</p>-->
+<!--                    <p>We love that guy</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+    </div>
+</div>
+</body>
+</html>

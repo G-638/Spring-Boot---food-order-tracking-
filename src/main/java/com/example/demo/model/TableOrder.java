@@ -26,12 +26,17 @@ public class TableOrder {
     @Column(nullable = false)
     private String tableId;
 
+    @Column(nullable = false)
+    @Getter @Setter
+    private String branch;
+
     public TableOrder(){}
 
-    public TableOrder(String uid, int qty , String tableId){
+    public TableOrder(String uid, int qty , String tableId, String branch){
         this.uid = uid;
         this.qty=qty;
         this.tableId=tableId;
+        this.branch=branch;
     }
 
 }

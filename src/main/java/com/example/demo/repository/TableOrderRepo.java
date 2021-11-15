@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.FoodItems;
 import com.example.demo.model.TableOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,12 +25,15 @@ public interface TableOrderRepo extends JpaRepository<TableOrder, String> {
     @Query("select t from TableOrder t where t.tableId=:tableId")
     ArrayList<TableOrder> findByTableId(@Param("tableId") String tableId);
 
+    @Query("select t from TableOrder t where t.branch=:branch")
+    ArrayList<TableOrder> findByBranch(@Param("branch") String branch);
+
 //    @Modifying
 //    @Query("update TableOrder t set t.qty=:qty where t.tableId=:tableId && t.uid=:uid")
 //    void updateQty(@Param("tableId") String tableId, @Param("uid") String uid, @Param("qty") int qty);
 
     //DQL
-    @Query("select tableId from TableOrder")
-    HashSet<String> getOrderedTable();
+    @Query("select tableId from TableOrder t where t.branch=:branch")
+    HashSet<String> getOrderedTable(@Param("branch") String branch);
 
 }

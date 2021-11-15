@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     body{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,7 +12,7 @@
     }
     .topnav {
         background-color: #f1f1f1;
-        border-bottom: 1px solid red;
+        border-bottom: 2px solid red;
         overflow: hidden;
       }
 
@@ -24,9 +25,10 @@
         font-size: 17px;
       }
       
-      .topnav a:hover {
-        border-bottom: 3px solid red;
-        color: black;
+      .topnav a:hover,.dropdown:hover, .dropbtn {
+        border-bottom: 2px solid red;
+        background-color: #ff030f;
+        color: white;
       }
       
 <!--      .topnav a.active {-->
@@ -85,43 +87,102 @@
     tr:nth-child(even) {
       background-color: #dddddd;
     }
+     .dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: red;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  color: white;
+}
 
 </style>
 <body>
 <script>
-        function showTable(id){
-            window.location.href="/products/"+id;
+        function showTable(id,branch){
+            console.log(branch);
+            window.location.href="/products/"+branch+"/"+id;
+            console.log("/products/"+branch+"/"+id);
+        }
+        function myFunction(){
+             window.location.href="/";
         }
 </script>
-<div class="topnav">
+<div class="topnav" th:if="${role == 'user'}">
     <a class="active" href="/">Home</a>
+    <a href="/logout" style="float: right;">Logout</a>
+</div>
+<div class="topnav" th:if="${role == 'manager'}">
+    <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">Home
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/table/{branch}(branch=${branch1})}" th:text="${branchA}"></a>
+            <a th:href="@{/table/{branch}(branch=${branch2})}" th:text="${branchB}"></a>
+        </div>
+    </div>
     <a href="/logout" style="float: right;">Logout</a>
 </div>
 <div class="split left">
     <div class="centered">
         <div class="table-row">
-                <div class="tables" onclick="showTable('t1')" th:style="${#lists.contains(tables, 't1') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+                <div class="tables" th:onclick="showTable('t1',[[${branch}]])" th:style="${#lists.contains(tables, 't1') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T1</h2>
             </div>
-            <div class="tables" onclick="showTable('t2')" th:style="${#lists.contains(tables, 't2') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+            <div class="tables" th:onclick="showTable('t2',[[${branch}]])" th:style="${#lists.contains(tables, 't2') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T2</h2>
             </div>
         </div>
         <br>
         <div class="table-row">
-            <div class="tables" onclick="showTable('t3')" th:style="${#lists.contains(tables, 't3') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+            <div class="tables" th:onclick="showTable('t3',[[${branch}]])" th:style="${#lists.contains(tables, 't3') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T3</h2>
             </div>
-            <div class="tables" onclick="showTable('t4')" th:style="${#lists.contains(tables, 't4') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+            <div class="tables" th:onclick="showTable('t4',[[${branch}]])" th:style="${#lists.contains(tables, 't4') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T4</h2>
             </div>
         </div>
         <br>
         <div class="table-row">
-            <div class="tables" onclick="showTable('t5')" th:style="${#lists.contains(tables, 't5') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+            <div class="tables" th:onclick="showTable('t5',[[${branch}]])" th:style="${#lists.contains(tables, 't5') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T5</h2>
             </div>
-            <div class="tables" onclick="showTable('t6')" th:style="${#lists.contains(tables, 't6') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
+            <div class="tables" th:onclick="showTable('t6',[[${branch}]])" th:style="${#lists.contains(tables, 't6') ? 'border: 2px solid #eb5834' : 'border: 2px solid #42f572'}">
                 <h2>T6</h2>
             </div>
         </div>
@@ -129,7 +190,6 @@
 </div>
 <div class="split right">
     <div class="centered">
-<!--        <span th:text ="${#authentication.getPrincipal().getUser().getFirstName()}"></span>-->
         <h4>Menu Card</h4>
         <table id="foodDetails">
             <tr>

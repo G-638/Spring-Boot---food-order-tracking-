@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Details</title>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     body{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,11 +25,13 @@
         font-size: 17px;
       }
 
-      .topnav a:hover {
-        border-bottom: 3px solid red;
+      .topnav a:hover , .dropdown:hover, .dropbtn{
+        border-bottom: 2px solid red;
+        background-color: red;
         color: black;
       }
-    .submit-btn{
+
+    .reset-btn{
       background-color: #4278ff;
       color: #f2f2f2;
       display: block;
@@ -41,7 +44,7 @@
       font-size: 17px;
       margin: 5px auto;
     }
-    .reset-btn{
+    .submit-btn{
       background-color: #ff6868;
       color: #f2f2f2;
       border: none;
@@ -104,6 +107,49 @@
         text-align: center;
     }
 
+         .dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: red;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  color: white;
+}
+
 
 
 </style>
@@ -117,7 +163,7 @@
             return false;
         return true;
     }
-    function getTableData(){
+    function getTableData(branch){
       var data = [];
         var table = document.getElementById("foodDetails");
         for(var i=1; i<table.rows.length;i++){
@@ -138,7 +184,7 @@
 
         const form = document.createElement('form');
         form.method = "post";
-        form.action = "/additem"+tableId;
+        form.action = "/additem/"+branch+tableId;
         const hiddenField = document.createElement('input');
         hiddenField.type = 'hidden';
         hiddenField.name = 'data';
@@ -168,14 +214,27 @@
       form.submit();
       console.log(data);
     }
-
-
+    function myFunction(){
+       window.location.href="/";
+    }
 
 </script>
 <body>
 
-<div class="topnav">
-    <a class="active" href="/homepage">Home</a>
+<div class="topnav" th:if="${role == 'user'}">
+    <a class="active" href="/">Home</a>
+    <a href="/logout" style="float: right;">Logout</a>
+</div>
+<div class="topnav" th:if="${role == 'manager'}">
+    <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">Home
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/table/{branch}(branch=${branch1})}" th:text="${branchA}"></a>
+            <a th:href="@{/table/{branch}(branch=${branch2})}" th:text="${branchB}"></a>
+        </div>
+    </div>
     <a href="/logout" style="float: right;">Logout</a>
 </div>
 <br>
@@ -199,10 +258,11 @@
         <br>
         <br>
         <div>
-            <input class="submit-btn" onclick=getTableData() type="submit">
                 <form METHOD="post" th:action="@{/reset/}+${id}">
                     <input class="reset-btn" type="submit" value=" Reset ">
                 </form>
+            <input class="submit-btn" th:onclick=getTableData([[${branch}]]) type="submit">
+
         </div>
     </div>
     <br>

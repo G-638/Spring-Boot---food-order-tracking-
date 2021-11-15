@@ -44,9 +44,7 @@ public class UserController {
             model.addAttribute("error", "USERNAME_ALREADY_EXIST");
             return "signup";
         }
-        User castedUser = new User(user.getUsername(),passwordEncoder.encode(user.getPassword()));
-        castedUser.setUid(getUniqueId());
-        castedUser.setEmail(user.getUsername());
+        User castedUser = new User(user.getName(),user.getUsername(), passwordEncoder.encode(user.getPassword()), getUniqueId(), user.getRole(), user.getBranch(),user.getGender(),user.getAddress(),user.getPhoneNo());
         userRepo.save(castedUser);
 
         model.addAttribute("info", SIGNUP_SUCCESS);
